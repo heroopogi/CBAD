@@ -30,6 +30,7 @@ $inventory_items = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -54,17 +55,18 @@ $inventory_items = [
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="order-medicines.php">Order Medicines</a>
+                        <a class="nav-link" href="orderMed.php">Order Medicines</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="track-order.php">Track Your Order</a>
+                        <a class="nav-link" href="trackOrder.php">Track Your Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="inventory.php">Inventory (Staff)</a>
+                        <a class="nav-link active" href="Inventory.php">Inventory (Staff)</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control" type="search" placeholder="Search for medicines or health products...">
+                <form class="d-flex" onsubmit="performSearch(event)">
+                    <input class="form-control me-2" type="search" placeholder="Search for medicines or health products..." id="searchInput">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -73,16 +75,21 @@ $inventory_items = [
     <!-- Inventory Section -->
     <section class="py-5">
         <div class="container-fluid">
-            <h1 class="text-center mb-5">Inventory</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="fw-bold">Inventory Management</h1>
+                <button class="btn btn-primary btn-lg rounded-pill px-4" onclick="addNewProduct()">
+                    <i class="bi bi-plus-lg me-2"></i>Add New Product
+                </button>
+            </div>
             
             <div class="row">
                 <!-- Filter Sidebar -->
-                <div class="col-md-2">
+                <div class="col-md-3 col-lg-2">
                     <div class="filter-sidebar">
-                        <h4>Filter</h4>
+                        <h4 class="mb-4">Filters</h4>
                         
                         <select class="form-select" id="medicineType">
-                            <option>Medicine type</option>
+                            <option selected>Medicine type</option>
                             <option>Tablets</option>
                             <option>Capsules</option>
                             <option>Liquid</option>
@@ -90,22 +97,22 @@ $inventory_items = [
                         </select>
                         
                         <select class="form-select" id="size">
-                            <option>Size</option>
+                            <option selected>Size</option>
                             <option>Small</option>
                             <option>Medium</option>
                             <option>Large</option>
                         </select>
                         
                         <select class="form-select" id="price">
-                            <option>Price</option>
+                            <option selected>Price</option>
                             <option>₱0 - ₱50</option>
                             <option>₱51 - ₱100</option>
                             <option>₱101 - ₱200</option>
                             <option>₱201+</option>
                         </select>
                         
-                        <div class="mt-3">
-                            <label class="fw-bold mb-2">Sort by:</label>
+                        <div class="mt-4">
+                            <label class="fw-bold mb-3">Sort by:</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="sortAZ">
                                 <label class="form-check-label" for="sortAZ">A to Z (product)</label>
@@ -116,21 +123,25 @@ $inventory_items = [
                             </div>
                         </div>
                         
-                        <select class="form-select mt-3" id="source">
-                            <option>Source</option>
+                        <select class="form-select mt-4" id="source">
+                            <option selected>Source</option>
                             <option>Manufacturer A</option>
                             <option>Manufacturer B</option>
                         </select>
+                        
+                        <button class="btn btn-primary w-100 mt-4" onclick="applyInventoryFilters()">Apply Filters</button>
                     </div>
                 </div>
 
                 <!-- Inventory Table -->
-                <div class="col-md-10">
+                <div class="col-md-9 col-lg-10">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <button class="btn btn-dark btn-lg rounded-circle" style="width: 60px; height: 60px;">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                        <input type="text" class="form-control w-50" placeholder="Search for specific products...">
+                        <div class="input-group w-50">
+                            <input type="text" class="form-control" placeholder="Search for specific products...">
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="inventory-table table-responsive">
@@ -144,6 +155,7 @@ $inventory_items = [
                                     <th>TOTAL SALES (₱)</th>
                                     <th># OF ORDERS</th>
                                     <th>EXP. DATE</th>
+                                    <th>ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -156,5 +168,100 @@ $inventory_items = [
                                     <td><?php echo number_format($item['sales'], 2); ?></td>
                                     <td><?php echo $item['orders']; ?></td>
                                     <td><?php echo $item['exp_date']; ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="editProduct(<?php echo $item['id']; ?>)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(<?php echo $item['id']; ?>)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <p class="text-muted mb-0">Showing 1 to 16 of 16 entries</p>
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Let's stay in touch! Sign up to our newsletter and get the best deals!</h5>
+                    <form class="mt-3" onsubmit="subscribeToNewsletter(event)">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Insert your email address here" required>
+                            <button class="btn btn-outline-light" type="submit">Subscribe now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="logo-box mb-3">
+                        <span class="logo-text">rm</span>
+                        <small class="logo-subtext">HEALTH MEDS</small>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Help</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Customer service</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">How to guides</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Contact us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Other</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Sitemap</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Subscriptions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0 text-white-50">© 2025 RM Diabetes Health Options Pharmacy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cart.js"></script>
+    
+    <!-- Floating Cart Button -->
+    <button class="floating-cart-btn" onclick="window.location.href='orderMed.php'">
+        <i class="bi bi-cart"></i>
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">0</span>
+    </button>
+    
+</body>
+</html>
