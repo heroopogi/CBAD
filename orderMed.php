@@ -28,6 +28,7 @@ $products = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -52,33 +53,35 @@ $products = [
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="order-medicines.php">Order Medicines</a>
+                        <a class="nav-link active" href="orderMed.php">Order Medicines</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="track-order.php">Track Your Order</a>
+                        <a class="nav-link" href="trackOrder.php">Track Your Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="inventory.php">Inventory (Staff)</a>
+                        <a class="nav-link" href="Inventory.php">Inventory (Staff)</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control" type="search" placeholder="Search for medicines or health products...">
+                <form class="d-flex" onsubmit="performSearch(event)">
+                    <input class="form-control me-2" type="search" placeholder="Search for medicines or health products..." id="searchInput">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
             </div>
         </div>
     </nav>
 
     <!-- Order Medicines Header -->
-    <section class="py-4" style="background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);">
+    <section class="py-5" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h1 class="display-5 fw-bold">Check Availability &</h1>
                     <h1 class="display-5 fw-bold">Place Your Order</h1>
                     <h1 class="display-5 fw-bold">Online</h1>
+                    <p class="lead mt-3">Browse our extensive collection of medications and health products. Add items to your cart and checkout when ready.</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="https://via.placeholder.com/500x300/d4d4d4/666666?text=Pharmacy+Shelves" alt="Pharmacy" class="img-fluid rounded">
+                    <img src="https://via.placeholder.com/500x300/d4d4d4/666666?text=Pharmacy+Shelves" alt="Pharmacy" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
@@ -89,59 +92,61 @@ $products = [
         <div class="container-fluid">
             <div class="row">
                 <!-- Filter Sidebar -->
-                <div class="col-md-2">
+                <div class="col-md-3 col-lg-2">
                     <div class="filter-sidebar">
-                        <h4>Filter</h4>
+                        <h4 class="mb-4">Filters</h4>
                         
                         <select class="form-select" id="medicineType">
-                            <option>Medicine type</option>
+                            <option selected>Medicine type</option>
                             <option>Tablets</option>
                             <option>Capsules</option>
                             <option>Liquid</option>
                         </select>
                         
                         <select class="form-select" id="size">
-                            <option>Size</option>
+                            <option selected>Size</option>
                             <option>Small</option>
                             <option>Medium</option>
                             <option>Large</option>
                         </select>
                         
                         <select class="form-select" id="price">
-                            <option>Price</option>
+                            <option selected>Price</option>
                             <option>₱0 - ₱100</option>
                             <option>₱101 - ₱200</option>
                             <option>₱201+</option>
                         </select>
                         
-                        <div class="mt-3">
-                            <label class="fw-bold mb-2">Sort by:</label>
+                        <div class="mt-4">
+                            <label class="fw-bold mb-3">Sort by:</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="sortAZ">
                                 <label class="form-check-label" for="sortAZ">A to Z</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="sortLowest">
-                                <label class="form-check-label" for="sortLowest">Lowest</label>
+                                <label class="form-check-label" for="sortLowest">Lowest Price</label>
                             </div>
                         </div>
                         
-                        <select class="form-select mt-3" id="source">
-                            <option>Source</option>
+                        <select class="form-select mt-4" id="source">
+                            <option selected>Source</option>
                             <option>Local</option>
                             <option>Imported</option>
                         </select>
+                        
+                        <button class="btn btn-primary w-100 mt-4" onclick="applyFilters()">Apply Filters</button>
                     </div>
                 </div>
 
                 <!-- Products Grid -->
-                <div class="col-md-10">
+                <div class="col-md-9 col-lg-10">
                     <!-- Category Tabs -->
                     <div class="mb-4">
-                        <button class="btn btn-outline-secondary me-2">Diabetes Care</button>
-                        <button class="btn btn-outline-secondary me-2 active">Vitamins</button>
-                        <button class="btn btn-outline-secondary me-2">Medicine</button>
-                        <button class="btn btn-outline-secondary">Other</button>
+                        <button class="btn btn-outline-secondary me-2" onclick="filterProducts('diabetes')">Diabetes Care</button>
+                        <button class="btn btn-outline-secondary me-2 active" onclick="filterProducts('vitamins')">Vitamins</button>
+                        <button class="btn btn-outline-secondary me-2" onclick="filterProducts('medicine')">Medicine</button>
+                        <button class="btn btn-outline-secondary" onclick="filterProducts('other')">Other</button>
                     </div>
 
                     <div class="product-grid">
@@ -152,16 +157,16 @@ $products = [
                             <div class="product-price">₱<?php echo number_format($product['price'], 2); ?></div>
                             <?php if ($product['id'] <= 6): ?>
                             <div class="quantity-controls">
-                                <button class="btn-decrease" onclick="decreaseQty(<?php echo $product['id']; ?>)">-</button>
+                                <button class="btn-decrease" onclick="decreaseQuantity(<?php echo $product['id']; ?>)">-</button>
                                 <span id="qty-<?php echo $product['id']; ?>">0</span>
-                                <button class="btn-increase" onclick="increaseQty(<?php echo $product['id']; ?>)">+</button>
+                                <button class="btn-increase" onclick="increaseQuantity(<?php echo $product['id']; ?>)">+</button>
                             </div>
-                            <button class="btn btn-dark btn-sm w-100" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', <?php echo $product['price']; ?>)">
+                            <button class="btn btn-primary btn-sm w-100" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', <?php echo $product['price']; ?>)">
                                 Add to cart
                             </button>
                             <?php else: ?>
-                            <p class="text-muted mb-2">N/A</p>
-                            <button class="btn btn-dark btn-sm w-100" disabled>Add to cart</button>
+                            <p class="text-muted mb-2">Out of Stock</p>
+                            <button class="btn btn-secondary btn-sm w-100" disabled>Add to cart</button>
                             <?php endif; ?>
                         </div>
                         <?php endforeach; ?>
@@ -174,35 +179,47 @@ $products = [
     <!-- Checkout Section -->
     <section class="checkout-section" id="checkoutSection" style="display: none;">
         <div class="container">
-            <a href="#" class="btn btn-link text-decoration-none mb-4" onclick="hideCheckout()">
-                <i class="bi bi-chevron-left"></i> Back
+            <a href="#" class="btn btn-link text-decoration-none mb-4 fw-bold" onclick="hideCheckout()">
+                <i class="bi bi-chevron-left"></i> Back to Shopping
             </a>
             
             <div class="row">
                 <!-- Items Overview -->
                 <div class="col-md-5">
                     <div class="items-overview">
-                        <h4 class="mb-4">Items overview</h4>
-                        <p class="text-muted">Please verify the items in your cart and choose your preferred shipping method.</p>
+                        <h4 class="mb-4 fw-bold">Order Summary</h4>
+                        <p class="text-muted">Please verify the items in your cart and complete your purchase.</p>
                         
                         <div id="cartItems"></div>
                         
                         <div class="mt-4">
-                            <h5>Available Shipping Methods</h5>
+                            <h5 class="fw-bold">Shipping Method</h5>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="shipping" id="homeDelivery" checked>
                                 <label class="form-check-label" for="homeDelivery">
                                     Home Delivery <span class="float-end">Free</span>
                                 </label>
                             </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shipping" id="pickup">
+                                <label class="form-check-label" for="pickup">
+                                    In-Store Pickup <span class="float-end">Free</span>
+                                </label>
+                            </div>
                         </div>
                         
                         <div class="mt-4">
-                            <h5>Payment Options</h5>
+                            <h5 class="fw-bold">Payment Options</h5>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="payment" id="mobilePay" checked>
                                 <label class="form-check-label" for="mobilePay">
                                     Mobile Pay
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="cashOnDelivery">
+                                <label class="form-check-label" for="cashOnDelivery">
+                                    Cash on Delivery
                                 </label>
                             </div>
                         </div>
@@ -212,8 +229,8 @@ $products = [
                 <!-- Payment Details -->
                 <div class="col-md-7">
                     <div class="payment-details">
-                        <h4 class="mb-4">Payment details</h4>
-                        <p class="text-muted">Fill in your payment details and complete the order.</p>
+                        <h4 class="mb-4 fw-bold">Delivery Information</h4>
+                        <p class="text-muted">Fill in your details to complete the order.</p>
                         
                         <form id="checkoutForm">
                             <div class="mb-3">
@@ -242,7 +259,7 @@ $products = [
                                 </div>
                             </div>
                             
-                            <button type="submit" class="btn btn-dark w-100 py-3">Finish purchase</button>
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">Complete Purchase</button>
                         </form>
                     </div>
                 </div>
@@ -251,14 +268,14 @@ $products = [
     </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-white py-4">
+    <footer class="footer py-5">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-md-6">
                     <h5>Let's stay in touch! Sign up to our newsletter and get the best deals!</h5>
-                    <form class="mt-3">
+                    <form class="mt-3" onsubmit="subscribeToNewsletter(event)">
                         <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Insert your email address here">
+                            <input type="email" class="form-control" placeholder="Insert your email address here" required>
                             <button class="btn btn-outline-light" type="submit">Subscribe now</button>
                         </div>
                     </form>
@@ -293,10 +310,21 @@ $products = [
                     </ul>
                 </div>
             </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0 text-white-50">© 2025 RM Diabetes Health Options Pharmacy. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="cart.js"></script>
+    
+    <!-- Floating Cart Button -->
+    <button class="floating-cart-btn" onclick="showCheckout()">
+        <i class="bi bi-cart"></i>
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">0</span>
+    </button>
+    
 </body>
 </html>
