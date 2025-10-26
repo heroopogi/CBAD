@@ -10,6 +10,7 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -34,17 +35,18 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="order-medicines.php">Order Medicines</a>
+                        <a class="nav-link" href="orderMed.php">Order Medicines</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="track-order.php">Track Your Order</a>
+                        <a class="nav-link active" href="trackOrder.php">Track Your Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="inventory.php">Inventory (Staff)</a>
+                        <a class="nav-link" href="Inventory.php">Inventory (Staff)</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control" type="search" placeholder="Search for medicines or health products...">
+                <form class="d-flex" onsubmit="performSearch(event)">
+                    <input class="form-control me-2" type="search" placeholder="Search for medicines or health products..." id="searchInput">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -53,12 +55,12 @@ session_start();
     <!-- Track Order Section -->
     <section class="track-order-section">
         <div class="container">
-            <a href="index.php" class="btn btn-link text-decoration-none mb-4">
-                <i class="bi bi-chevron-left"></i> Back
+            <a href="index.php" class="btn btn-link text-decoration-none mb-4 fw-bold">
+                <i class="bi bi-chevron-left"></i> Back to Home
             </a>
             
-            <h1 class="text-center mb-4">Track Your Order</h1>
-            <p class="text-center text-muted mb-5">
+            <h1 class="text-center mb-4 fw-bold">Track Your Order</h1>
+            <p class="text-center text-muted mb-5 lead">
                 To find out the current status of your order, please provide your Order ID and the<br>
                 Phone Number you used during checkout. The tracking information will then be sent<br>
                 as a text message.
@@ -88,18 +90,19 @@ session_start();
                     </div>
                     
                     <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-dark btn-lg px-5">Track</button>
+                        <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold">Track Order</button>
                     </div>
                 </form>
                 
                 <div id="trackingResult" class="mt-5" style="display: none;">
-                    <div class="alert alert-success">
-                        <h5 class="alert-heading"><i class="bi bi-check-circle"></i> Order Found!</h5>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h5 class="alert-heading fw-bold"><i class="bi bi-check-circle me-2"></i> Order Found!</h5>
                         <p class="mb-0">Tracking information has been sent to your phone number via SMS.</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div class="card">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Order Status</h5>
+                            <h5 class="card-title fw-bold">Order Status</h5>
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <p><strong>Order ID:</strong> <span id="displayOrderId"></span></p>
@@ -109,6 +112,46 @@ session_start();
                                 <div class="col-md-6">
                                     <p><strong>Contact Number:</strong> <span id="displayPhone"></span></p>
                                     <p><strong>Order Date:</strong> <?php echo date('F d, Y'); ?></p>
+                                    <p><strong>Order Total:</strong> ₱1,250.00</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6 class="fw-bold">Order Progress</h6>
+                                <div class="progress-steps mt-3">
+                                    <div class="step completed">
+                                        <div class="step-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-check"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0 fw-bold">Order Placed</p>
+                                        <p class="text-muted small">Oct 25, 2025</p>
+                                    </div>
+                                    <div class="step completed">
+                                        <div class="step-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-check"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0 fw-bold">Payment Received</p>
+                                        <p class="text-muted small">Oct 25, 2025</p>
+                                    </div>
+                                    <div class="step active">
+                                        <div class="step-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-box-seam"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0 fw-bold">Processing</p>
+                                        <p class="text-muted small">Expected: Oct 27, 2025</p>
+                                    </div>
+                                    <div class="step">
+                                        <div class="step-icon bg-light text-dark rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-truck"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0 fw-bold">Shipped</p>
+                                    </div>
+                                    <div class="step">
+                                        <div class="step-icon bg-light text-dark rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-house-door"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0 fw-bold">Delivered</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -119,14 +162,14 @@ session_start();
     </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-white py-4">
+    <footer class="footer py-5">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-md-6">
                     <h5>Let's stay in touch! Sign up to our newsletter and get the best deals!</h5>
-                    <form class="mt-3">
+                    <form class="mt-3" onsubmit="subscribeToNewsletter(event)">
                         <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Insert your email address here">
+                            <input type="email" class="form-control" placeholder="Insert your email address here" required>
                             <button class="btn btn-outline-light" type="submit">Subscribe now</button>
                         </div>
                     </form>
@@ -161,6 +204,10 @@ session_start();
                     </ul>
                 </div>
             </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0 text-white-50">© 2025 RM Diabetes Health Options Pharmacy. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
@@ -181,5 +228,58 @@ session_start();
             document.getElementById('trackingResult').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
+    
+    <style>
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #e2e8f0;
+            z-index: 1;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            font-size: 16px;
+        }
+        
+        .step.completed .step-icon {
+            background-color: #10b981 !important;
+        }
+        
+        .step.active .step-icon {
+            background-color: #2563eb !important;
+        }
+        
+        .step:not(.completed):not(.active) .step-icon {
+            background-color: #f1f5f9 !important;
+            color: #94a3b8 !important;
+        }
+    </style>
+    
+    <!-- Floating Cart Button -->
+    <button class="floating-cart-btn" onclick="window.location.href='orderMed.php'">
+        <i class="bi bi-cart"></i>
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">0</span>
+    </button>
+    
 </body>
 </html>
