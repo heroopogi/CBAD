@@ -1,0 +1,614 @@
+/* Main Styles for RM Diabetes Health Options Pharmacy */
+
+/* Modern Color Palette */
+:root {
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary-color: #10b981;
+    --accent-color: #8b5cf6;
+    --light-bg: #f8fafc;
+    --dark-bg: #0f172a;
+    --text-dark: #1e293b;
+    --text-light: #f1f5f9;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* General Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Header Styles */
+.navbar-dark {
+    background-color: var(--dark-bg) !important;
+}
+
+.navbar-brand .logo-box {
+    display: inline-block;
+    border: 2px solid var(--text-light);
+    padding: 5px 15px;
+    position: relative;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.navbar-brand .logo-subtext {
+    position: absolute;
+    bottom: -5px;
+    right: 5px;
+    font-size: 0.6rem;
+    font-weight: 600;
+}
+
+/* Navigation */
+.navbar-light {
+    background-color: white !important;
+    box-shadow: var(--shadow);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--text-dark);
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.nav-link.active {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    margin-bottom: 2rem;
+    border-radius: 0 0 20px 20px;
+}
+
+.hero-section h1 {
+    font-weight: 800;
+    color: var(--dark-bg);
+    letter-spacing: -1px;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    color: #334155;
+}
+
+.hero-section .btn {
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Features Section */
+.features-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.feature-icon {
+    color: var(--primary-color);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    background-color: #dbeafe;
+    border-radius: 50%;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+}
+
+.features-section h4 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Featured Products */
+.featured-products {
+    padding: 4rem 0;
+    background-color: var(--light-bg);
+}
+
+.featured-products h2 {
+    font-weight: 800;
+    color: var(--dark-bg);
+}
+
+.featured-products .product-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 100%;
+    background-color: white;
+}
+
+.featured-products .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.featured-products .card-body {
+    padding: 1.5rem;
+}
+
+.featured-products .card-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.featured-products .card-text {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.featured-products .btn {
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.badge-label {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.most-sold-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Products Grid (Order Medicines Page) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.product-item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.product-item h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    min-height: 45px;
+    color: var(--text-dark);
+}
+
+.product-item .product-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+/* Quantity Controls */
+.quantity-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.quantity-controls span {
+    margin: 0 12px;
+    min-width: 35px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.quantity-controls button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-controls button:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.quantity-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Cart Styles */
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 8px;
+}
+
+.cart-item .flex-grow-1 h6 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.cart-item .btn-danger {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #fee2e2;
+    border: none;
+    color: #ef4444;
+    transition: all 0.3s ease;
+}
+
+.cart-item .btn-danger:hover {
+    background-color: #ef4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Checkout Section */
+.checkout-section {
+    background: white;
+    padding: 40px 0;
+    margin: 30px 0;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+}
+
+.items-overview {
+    background: var(--light-bg);
+    padding: 25px;
+    border-radius: 12px;
+    height: fit-content;
+    box-shadow: var(--shadow);
+}
+
+.payment-details {
+    padding: 25px;
+}
+
+.payment-details h4 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.payment-details .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.payment-details .form-control {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.payment-details .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+}
+
+.payment-details .btn {
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Track Order Section */
+.track-order-section {
+    padding: 40px 0;
+    background: white;
+    min-height: 70vh;
+}
+
+.track-order-form {
+    max-width: 700px;
+    margin: 0 auto;
+    background: var(--light-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.track-order-form .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.track-order-form .form-control {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.track-order-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+}
+
+.track-order-form .btn {
+    padding: 12px 40px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Inventory Section */
+.inventory-table {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.inventory-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.inventory-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 15px;
+    text-align: left;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.inventory-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.inventory-table tr:last-child td {
+    border-bottom: none;
+}
+
+.inventory-table tr:hover td {
+    background-color: #f1f5f9;
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    height: fit-content;
+}
+
+.filter-sidebar h4 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.filter-sidebar select {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.filter-sidebar .form-check {
+    margin-bottom: 12px;
+}
+
+.filter-sidebar .form-check-label {
+    font-weight: 500;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    margin-top: 3rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+.footer .logo-box {
+    border: 2px solid var(--text-light);
+    padding: 5px 15px;
+    position: relative;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: inline-block;
+}
+
+.footer .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.footer .logo-subtext {
+    position: absolute;
+    bottom: -5px;
+    right: 5px;
+    font-size: 0.6rem;
+    font-weight: 600;
+}
+
+.footer h5 {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer h6 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer .social-icons a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+    transform: translateY(-3px);
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.footer ul li a {
+    transition: color 0.3s ease;
+}
+
+.footer ul li a:hover {
+    color: white !important;
+}
+
+/* Floating Cart Button */
+.floating-cart-btn {
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.floating-cart-btn:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.floating-cart-btn i {
+    font-size: 24px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cart-item img {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .checkout-section .items-overview {
+        margin-bottom: 30px;
+    }
+    
+    .hero-section {
+        padding: 2rem 0;
+        text-align: center;
+    }
+    
+    .track-order-form {
+        padding: 20px;
+    }
+    
+    .filter-sidebar {
+        margin-bottom: 20px;
+    }
+    
+    .navbar-brand .logo-text {
+        font-size: 1.2rem;
+    }
+}
