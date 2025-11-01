@@ -1,34 +1,123 @@
-// Medicine Inventory using localStorage
-let medicines = JSON.parse(localStorage.getItem('medicines')) || [];
-
-function saveData() {
-  localStorage.setItem('medicines', JSON.stringify(medicines));
+// Function to update dashboard stats
+function updateDashboardStats() {
+    fetch('includes/get_medicines.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const medicines = data.data;
+                
+                // Update total medicines count
+                document.getElementById('totalMedicines').textContent = medicines.length;
+                
+                // Count low stock items
+                const lowStockCount = medicines.filter(med => med.status === 'Low Stock').length;
+                document.getElementById('lowStock').textContent = lowStockCount;
+                
+                // Count expiring soon items
+                const expiringSoonCount = medicines.filter(med => med.status === 'Expiring Soon').length;
+                document.getElementById('expiringSoon').textContent = expiringSoonCount;
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
-// CREATE
-const addForm = document.getElementById('addForm');
-if (addForm) {
-  addForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const quantity = document.getElementById('quantity').value;
-    const expiry = document.getElementById('expiry').value;
-    medicines.push({ id: medicines.length + 1, name, quantity, expiry });
-    saveData();
-    alert('Medicine added!');
-    addForm.reset();
-  });
+// Function to update category counts
+function updateCategoryCounts() {
+    fetch('includes/get_category_counts.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update category counts
+                document.getElementById('antibioticsCount').textContent = data.counts.antibiotics || 0;
+                document.getElementById('painReliefCount').textContent = data.counts.painRelief || 0;
+                document.getElementById('vitaminsCount').textContent = data.counts.vitamins || 0;
+                document.getElementById('othersCount').textContent = data.counts.others || 0;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Add click handlers for category boxes
+    document.querySelectorAll('.category-box').forEach(box => {
+        box.style.cursor = 'pointer';
+        box.addEventListener('click', function() {
+            const category = this.querySelector('h6').textContent;
+            window.location.href = `read.html?category=${encodeURIComponent(category)}`;
+        });
+    });
 }
 
-// READ
-const table = document.getElementById('medicineTable');
-if (table) {
-  const tbody = table.querySelector('tbody');
-  tbody.innerHTML = '';
-  medicines.forEach((m) => {
-    const row = `<tr><td>${m.id}</td><td>${m.name}</td><td>${m.quantity}</td><td>${m.expiry}</td></tr>`;
-    tbody.innerHTML += row;
-  });
+// Show details for a selected stat in a modal
+function showStatDetails(stat) {
+    fetch('includes/get_medicines.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== 'success') return;
+            let medicines = data.data || [];
+
+            let title = 'Details';
+            if (stat === 'total') {
+                title = 'All Medicines';
+            } else if (stat === 'low-stock') {
+                medicines = medicines.filter(m => m.status === 'Low Stock');
+                title = 'Low Stock Items';
+            } else if (stat === 'expiring') {
+                medicines = medicines.filter(m => m.status === 'Expiring Soon');
+                title = 'Expiring Soon';
+            }
+
+            const tbody = document.getElementById('statDetailsBody');
+            const modalTitle = document.getElementById('statDetailsModalLabel');
+            tbody.innerHTML = '';
+            modalTitle.textContent = title + ` (${medicines.length})`;
+
+            medicines.forEach(m => {
+                const expiry = m.expiry_date || m.expiry || '';
+                const qty = m.quantity !== undefined ? m.quantity : (m.qty || '');
+                const status = m.status || '';
+                const row = `
+                    <tr>
+                        <td>${m.name}</td>
+                        <td>${qty}</td>
+                        <td>${expiry}</td>
+                        <td>${status}</td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            // Show bootstrap modal
+            const modalEl = document.getElementById('statDetailsModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        })
+        .catch(err => console.error('Error loading medicines for details:', err));
+}
+
+// Initialize dashboard if we're on the dashboard page
+if (document.getElementById('antibioticsCount')) {
+    // Initial load
+    updateDashboardStats();
+    updateCategoryCounts();
+
+    // Refresh every 30 seconds
+    setInterval(() => {
+        updateDashboardStats();
+        updateCategoryCounts();
+    }, 30000);
+
+    // Attach click handlers to quick stat cards
+    document.querySelectorAll('[data-stat]').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', function() {
+            const stat = this.getAttribute('data-stat');
+            showStatDetails(stat);
+        });
+    });
+
+    // Optional debug logging
+    fetch('includes/get_category_counts.php')
+        .then(response => response.json())
+        .then(data => console.log('Category counts:', data))
+        .catch(error => console.error('Error:', error));
 }
 
 // UPDATE
